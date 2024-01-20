@@ -3,8 +3,8 @@ from typing import List, Union
 
 import streamlit as st
 import graphviz
-from langchain.chat_models import ChatOpenAI
-from langchain.graphs import Neo4jGraph
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_community.graphs import Neo4jGraph
 from langchain.schema import HumanMessage, AIMessage
 
 from cypher_chain import CYPHER_QA_PROMPT

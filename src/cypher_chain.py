@@ -120,9 +120,10 @@ class CustomCypherChain(GraphCypherQAChain):
         entity_chain = create_structured_output_chain(
             Entities, self.qa_chain.llm, prompt
         )
-        entities = entity_chain.run(text)
+        entities = entity_chain.invoke({"input": text})
         print(entities)
-        return entities.name
+        print(type(entities))
+        return entities['function'].name
 
     def get_viz_data(self, entities: List[str]) -> List[Tuple[str, str]]:
         viz_query = """
@@ -233,8 +234,8 @@ class CustomCypherChain(GraphCypherQAChain):
         fewshots = self.get_fewshot_examples(question)
 
         system = self.generate_system_message(str(relevant_entities), fewshots)
-        generated_cypher = self.cypher_generation_chain.llm.predict_messages(
-            [system] + chat_history
+        generated_cypher = self.cypher_generation_chain.llm.invoke(
+          [system] + chat_history
         )
         print(generated_cypher.content)
         generated_cypher = extract_cypher(generated_cypher.content)
